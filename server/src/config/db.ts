@@ -1,7 +1,8 @@
 import env from "@/env";
+import logger from "@/utils/logger";
 import mongoose, { Mongoose } from "mongoose";
 
-const MONGODB_URI =   env.MONGODB_URI;
+const MONGODB_URI = env.MONGODB_URI;
 
 if (!MONGODB_URI) {
   throw new Error("MONGODB_URI is not defined");
@@ -24,7 +25,7 @@ if (!cached) {
 
 const dbConnect = async (): Promise<Mongoose> => {
   if (cached.conn) {
-    console.log("Using existing mongoose connection");
+    logger.info("Using existing mongoose connection");
     return cached.conn;
   }
 
@@ -34,11 +35,11 @@ const dbConnect = async (): Promise<Mongoose> => {
         dbName: "prestige_stays",
       })
       .then((result) => {
-        console.log("Connected to MongoDB");
+        logger.info("Connected to MongoDB");
         return result;
       })
       .catch((error) => {
-        console.log("Error connecting to MongoDB", error);
+        logger.error("Error connecting to MongoDB", error);
         throw error;
       });
   }

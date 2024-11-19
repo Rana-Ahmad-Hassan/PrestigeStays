@@ -1,9 +1,12 @@
 import express, { Application } from 'express';
 import dbConnect from '@/config/db';
-import { configDotenv } from 'dotenv';
-configDotenv()
+import expressPinoLogger from 'express-pino-logger';
+import logger from '@/utils/logger';
+
 
 const app:Application = express();
+
+app.use(expressPinoLogger({ logger:logger as any }));
 dbConnect()
 app.use(express.json());
 
