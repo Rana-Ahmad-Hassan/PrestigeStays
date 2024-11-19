@@ -1,6 +1,5 @@
 import { Schema, model, Model, Document } from "mongoose";
 
-// Define TypeScript interface for the User document
 interface IUser extends Document {
   name: string;
   email: string;
@@ -23,7 +22,6 @@ interface IUser extends Document {
   updatedAt?: Date;
 }
 
-// Define the schema
 const userSchema: Schema<IUser> = new Schema(
   {
     name: {
@@ -82,11 +80,10 @@ const userSchema: Schema<IUser> = new Schema(
     },
   },
   {
-    timestamps: true, // Automatically adds `createdAt` and `updatedAt`
+    timestamps: true, 
   }
 );
 
-// Create the User model
 const User: Model<IUser> = model<IUser>("User", userSchema);
 
 export default User;
