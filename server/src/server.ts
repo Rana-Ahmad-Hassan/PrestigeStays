@@ -1,13 +1,20 @@
-import 'tsconfig-paths/register'; // This for absolute imports like '@/'
+import "tsconfig-paths/register";
+import { Request, Response } from "express";
+import dbConnect from "@/config/db";
+import app from "@/app";
+import env from "@/env";
+import logger from "@/utils/logger";
 
-import { Request, Response } from 'express';
-import app from '@/app';
-import env from '@/env';
-import logger from '@/utils/logger';
-
-app.get('/',(req:Request, res:Response) => {       
-    res.send('Hello from PrestigeStays')
-})
+app.get("/", (req: Request, res: Response) => {
+  res.send("Hello from PrestigeStays");
+});
 
 const PORT = env.PORT;
-app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
+dbConnect()
+  .then(() => {
+    app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
+  })
+  .catch((error) => {
+    logger.error("Error starting server", error);
+    process.exit(1);
+  });
