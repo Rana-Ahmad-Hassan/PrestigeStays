@@ -4,7 +4,9 @@ import dbConnect from "@/config/db";
 import app from "@/app";
 import env from "@/env";
 import logger from "@/utils/logger";
+import userRouter from "./routes/user";
 
+app.use("/api/user", userRouter);
 app.get("/", (req: Request, res: Response) => {
   res.send("Hello from PrestigeStays");
 });

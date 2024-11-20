@@ -15,9 +15,9 @@ export interface IUser extends Document {
     };
     role: "guest" | "host" | "admin";
     profilePicture?: string | null;
-    bookings: Schema.Types.ObjectId[];
-    listings: Schema.Types.ObjectId[];
-    isVerified: boolean;
+    bookings?: Schema.Types.ObjectId[];
+    listings?: Schema.Types.ObjectId[];
+    isVerified?: boolean;
     createdAt?: Date;
     updatedAt?: Date;
   }
