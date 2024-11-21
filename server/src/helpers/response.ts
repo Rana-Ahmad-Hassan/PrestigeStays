@@ -1,4 +1,4 @@
-export const successResponse = (data: [], message: String) => ({
+export const successResponse = (data: any, message: String) => ({
   success: true,
   data,
   message,

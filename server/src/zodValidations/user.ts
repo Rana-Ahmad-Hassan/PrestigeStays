@@ -3,17 +3,17 @@ import { Request, Response, NextFunction } from "express";
 
 const addressSchema = z.object({
   street: z.string().optional(),
-  city: z.string().optional(),
-  state: z.string().optional(),
-  country: z.string().optional(),
+  city: z.string({message:"city is required"}),
+  state: z.string({message:"state is required"}),
+  country: z.string({message:"country is required"}),
   zipCode: z.string().optional(),
 });
 
 export const userSchema = z.object({
-  name: z.string().nonempty("Name is required"),
-  email: z.string().email("Invalid email address"),
+  name: z.string({message:"Name is required"}),
+  email: z.string().email({message:"Invalid email address"}),
   password: z.string().min(6, "Password must be at least 6 characters long"),
-  phoneNumber: z.string().nonempty("Phone number is required"),
+  phoneNumber: z.string({message:"Phone number is required"}),
   dateOfBirth: z
     .string()
     .transform((val) => new Date(val))

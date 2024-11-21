@@ -8,23 +8,7 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         const { name, email, password, phoneNumber, dateOfBirth, address, role } =
             req.body;
 
-        if (
-            !name ||
-            !email ||
-            !password ||
-            !phoneNumber ||
-            !dateOfBirth ||
-            !role ||
-            !address
-        ) {
-            res.status(400).send({
-                message: "All fields are required",
-            });
-            return;
-        }
-
         const existingUser = await User.findOne({ email });
-
         if (existingUser) {
             res.status(409).send({
                 message: "User already exists",
@@ -33,7 +17,6 @@ export const signUp = async (req: Request, res: Response): Promise<void> => {
         }
 
         const newPassword = await hashPassword(password);
-
         const newUser = await User.create({
             name,
             email,
