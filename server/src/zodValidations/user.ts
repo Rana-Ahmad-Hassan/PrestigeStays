@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Request, Response, NextFunction } from "express";
 
 const addressSchema = z.object({
   street: z.string().optional(),
@@ -13,7 +14,10 @@ export const userSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(6, "Password must be at least 6 characters long"),
   phoneNumber: z.string().nonempty("Phone number is required"),
-  dateOfBirth: z.string().transform((val) => new Date(val)).refine((date) => !isNaN(date.getTime()), "Invalid date"),
+  dateOfBirth: z
+    .string()
+    .transform((val) => new Date(val))
+    .refine((date) => !isNaN(date.getTime()), "Invalid date"),
   address: addressSchema.optional(),
   role: z.enum(["guest", "host", "admin"]).default("guest"),
   profilePicture: z.string().nullable().optional(),
@@ -24,4 +28,24 @@ export const userSchema = z.object({
   updatedAt: z.date().optional(),
 });
 
-export const validateUser = (data: unknown) => userSchema.parse(data);
+const userValidateMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    req.body = userSchema.parse(req.body);
+    next();
+  } catch (err) {
+    if (err instanceof z.ZodError) {
+      res.status(400).json({
+        message: "Validation error",
+        errors: err.errors,
+      });
+    } else {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  }
+};
+
+export default userValidateMiddleware;
